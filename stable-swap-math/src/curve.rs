@@ -545,6 +545,34 @@ mod tests {
     const RAMP_TICKS: i64 = 100000;
 
     #[test]
+    fn my_test() {
+        let stable_swap = StableSwap::new(30, 30, 0, 0, 0);
+        let deposit_amount_a = 200000000000000000000u128;
+        let deposit_amount_b = 0u128;
+        let amount_a = 199948105000000000000u128;
+        let amount_b = 200052383263072354374u128;
+        let pool_token_supply = 400000077354;
+        let mint_amount = stable_swap.compute_mint_amount_for_deposit2(
+            deposit_amount_a,
+            deposit_amount_b,
+            amount_a,
+            amount_b,
+            pool_token_supply,
+            &Fees {
+                admin_trade_fee_numerator: 0,
+                admin_trade_fee_denominator: 10000,
+                admin_withdraw_fee_numerator: 0,
+                admin_withdraw_fee_denominator: 10000,
+                trade_fee_numerator: 0,
+                trade_fee_denominator: 10000,
+                withdraw_fee_numerator: 0,
+                withdraw_fee_denominator: 10000,
+            },
+        );
+        println!("{:?}", mint_amount);
+    }
+
+    #[test]
     fn test_ramp_amp_up() {
         let mut rng = rand::thread_rng();
         let initial_amp_factor = 100;
