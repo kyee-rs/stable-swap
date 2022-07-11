@@ -7,6 +7,11 @@ const MAX: u64 = 1 << 32;
 const MAX_BIG: u64 = 1 << 48;
 const MAX_SMALL: u64 = 1 << 16;
 
+/// Same as mul_div, but with u128 parameters type, and support only u128 operation
+pub fn mul_div2(a: u128, b: u128, c: u128) -> Option<u128> {
+    a.checked_mul(b)?.checked_div(c)
+}
+
 /// Multiplies two u64s then divides by the third number.
 /// This function attempts to use 64 bit math if possible.
 #[inline(always)]
@@ -47,6 +52,16 @@ pub trait FeeCalculator {
     fn withdraw_fee(&self, withdraw_amount: u64) -> Option<u64>;
     /// Applies the normalized trade fee.
     fn normalized_trade_fee(&self, n_coins: u8, amount: u64) -> Option<u64>;
+    /// Same as admin_trade_fee, but with u128 parameters type
+    fn admin_trade_fee2(&self, fee_amount: u128) -> Option<u128>;
+    /// Same as admin_withdraw_fee, but with u128 parameters type
+    fn admin_withdraw_fee2(&self, fee_amount: u128) -> Option<u128>;
+    /// Same as trade_fee, but with u128 parameters type
+    fn trade_fee2(&self, trade_amount: u128) -> Option<u128>;
+    /// Same as withdraw_fee, but with u128 parameters type
+    fn withdraw_fee2(&self, withdraw_amount: u128) -> Option<u128>;
+    /// Same as normalized_trade_fee, but with u128 parameters type
+    fn normalized_trade_fee2(&self, n_coins: u8, amount: u128) -> Option<u128>;
 }
 
 impl FeeCalculator for Fees {
@@ -59,12 +74,28 @@ impl FeeCalculator for Fees {
         )
     }
 
+    fn admin_trade_fee2(&self, fee_amount: u128) -> Option<u128> {
+        mul_div2(
+            fee_amount,
+            self.admin_trade_fee_numerator.into(),
+            self.admin_trade_fee_denominator.into(),
+        )
+    }
+
     /// Apply admin withdraw fee
     fn admin_withdraw_fee(&self, fee_amount: u64) -> Option<u64> {
         mul_div_imbalanced(
             fee_amount,
             self.admin_withdraw_fee_numerator,
             self.admin_withdraw_fee_denominator,
+        )
+    }
+
+    fn admin_withdraw_fee2(&self, fee_amount: u128) -> Option<u128> {
+        mul_div2(
+            fee_amount,
+            self.admin_withdraw_fee_numerator.into(),
+            self.admin_withdraw_fee_denominator.into(),
         )
     }
 
@@ -77,12 +108,42 @@ impl FeeCalculator for Fees {
         )
     }
 
+    fn trade_fee2(&self, trade_amount: u128) -> Option<u128> {
+        mul_div2(
+            trade_amount,
+            self.trade_fee_numerator.into(),
+            self.trade_fee_denominator.into(),
+        )
+    }
+
     /// Compute withdraw fee from amount
     fn withdraw_fee(&self, withdraw_amount: u64) -> Option<u64> {
         mul_div_imbalanced(
             withdraw_amount,
             self.withdraw_fee_numerator,
             self.withdraw_fee_denominator,
+        )
+    }
+
+    fn withdraw_fee2(&self, withdraw_amount: u128) -> Option<u128> {
+        mul_div2(
+            withdraw_amount,
+            self.withdraw_fee_numerator.into(),
+            self.withdraw_fee_denominator.into(),
+        )
+    }
+
+    fn normalized_trade_fee2(&self, n_coins: u8, amount: u128) -> Option<u128> {
+        let adjusted_trade_fee_numerator = mul_div2(
+            self.trade_fee_numerator.into(),
+            n_coins.into(),
+            (n_coins.checked_sub(1)?).checked_mul(4)?.into(),
+        )?;
+
+        mul_div2(
+            amount,
+            adjusted_trade_fee_numerator,
+            self.trade_fee_denominator.into(),
         )
     }
 

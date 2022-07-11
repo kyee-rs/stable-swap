@@ -285,8 +285,8 @@ impl StableSwap {
                 } else {
                     new_balances[i].checked_sub(ideal_balance)?
                 };
-                let fee = fees.normalized_trade_fee(N_COINS, difference.try_into().ok()?)?;
-                new_balances[i] = new_balances[i].checked_sub(fee.into())?;
+                let fee = fees.normalized_trade_fee2(N_COINS, difference)?;
+                new_balances[i] = new_balances[i].checked_sub(fee)?;
             }
 
             let d_2 = self.compute_d2(new_balances[0], new_balances[1])?;
@@ -406,17 +406,11 @@ impl StableSwap {
                 .to_u128()?,
         )?;
         // new_base_amount = swap_base_amount - expected_base_amount * fee / fee_denominator;
-        let new_base_amount = swap_base_amount.checked_sub(
-            fees.normalized_trade_fee(N_COINS, expected_base_amount.try_into().ok()?)?
-                .try_into()
-                .ok()?,
-        )?;
+        let new_base_amount = swap_base_amount
+            .checked_sub(fees.normalized_trade_fee2(N_COINS, expected_base_amount)?)?;
         // new_quote_amount = swap_quote_amount - expected_quote_amount * fee / fee_denominator;
-        let new_quote_amount = swap_quote_amount.checked_sub(
-            fees.normalized_trade_fee(N_COINS, expected_quote_amount.try_into().ok()?)?
-                .try_into()
-                .ok()?,
-        )?;
+        let new_quote_amount = swap_quote_amount
+            .checked_sub(fees.normalized_trade_fee2(N_COINS, expected_quote_amount)?)?;
         let dy = new_base_amount
             .checked_sub(self.compute_y2(new_quote_amount, d_1)?)?
             .checked_sub(1)?; // Withdraw less to account for rounding errors
@@ -464,21 +458,21 @@ impl StableSwap {
         )?;
         // https://github.com/curvefi/curve-contract/blob/b0bbf77f8f93c9c5f4e415bce9cd71f0cdee960e/contracts/pool-templates/base/SwapTemplateBase.vy#L466
         let dy = swap_destination_amount.checked_sub(y)?.checked_sub(1)?;
-        let dy_fee = fees.trade_fee(dy.try_into().ok()?)?;
-        let admin_fee = fees.admin_trade_fee(dy_fee)?;
+        let dy_fee = fees.trade_fee2(dy)?;
+        let admin_fee = fees.admin_trade_fee2(dy_fee)?;
 
-        let amount_swapped = dy.checked_sub(dy_fee.into())?;
+        let amount_swapped = dy.checked_sub(dy_fee)?;
         let new_destination_amount = swap_destination_amount
             .checked_sub(amount_swapped)?
-            .checked_sub(admin_fee.into())?;
+            .checked_sub(admin_fee)?;
         let new_source_amount = swap_source_amount.checked_add(source_amount)?;
 
         Some(SwapResult2 {
             new_source_amount,
             new_destination_amount,
             amount_swapped,
-            admin_fee: admin_fee.into(),
-            fee: dy_fee.into(),
+            admin_fee,
+            fee: dy_fee,
         })
     }
 
