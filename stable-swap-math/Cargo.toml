@@ -19,4 +19,3 @@ uint = { version = "=0.9.1", default-features = false }
 [dev-dependencies]
 proptest = "1.0.0"
 rand = "0.8.4"
-stable-swap-sim = { path = "./sim", version = "^0.1" }
