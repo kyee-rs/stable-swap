@@ -1,9 +1,7 @@
 [workspace]
 members = [
-    "stable-swap-anchor/",
     "stable-swap-client/",
     "stable-swap-math/",
-    "stable-swap-program/program"
 ]
 
 [profile.release]
