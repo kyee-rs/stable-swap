@@ -210,7 +210,7 @@ impl StableSwap {
             // Newton's method to approximate D
             let mut d_prev: U192;
             let mut d: U192 = sum_x.into();
-            for _ in 0..256 {
+            for i in 0..256 {
                 let mut d_prod = d;
                 d_prod = d_prod
                     .checked_mul(d)?
@@ -227,6 +227,11 @@ impl StableSwap {
                     }
                 } else if d_prev.checked_sub(d)? <= 1.into() {
                     break;
+                }
+
+                if i == 255 {
+                    // Max iteration reached, but yet couldn't converge to precision of 1
+                    return None;
                 }
             }
 
@@ -336,7 +341,7 @@ impl StableSwap {
         // Solve for y by approximating: y**2 + b*y = c
         let mut y_prev: U192;
         let mut y = d;
-        for _ in 0..256 {
+        for i in 0..256 {
             y_prev = y;
             // y = (y * y + c) / (2 * y + b - d);
             let y_numerator = y.checked_pow(2.into())?.checked_add(c)?;
@@ -348,6 +353,10 @@ impl StableSwap {
                 }
             } else if y_prev.checked_sub(y)? <= 1.into() {
                 break;
+            }
+
+            if i == 255 {
+                return None;
             }
         }
         Some(y)
