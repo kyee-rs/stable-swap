@@ -6,13 +6,13 @@ use std::ops::Deref;
 
 /// StableSwap account wrapper for Anchor programs.
 ///
-/// *For more info, see [stable_swap_client::state::SwapInfo].*
+/// *For more info, see [meteora_stable_swap_client::state::SwapInfo].*
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct SwapInfo(stable_swap_client::state::SwapInfo);
+pub struct SwapInfo(meteora_stable_swap_client::state::SwapInfo);
 
 impl SwapInfo {
     /// The length, in bytes, of the packed representation
-    pub const LEN: usize = stable_swap_client::state::SwapInfo::LEN;
+    pub const LEN: usize = meteora_stable_swap_client::state::SwapInfo::LEN;
 
     /// Computes the minimum rent exempt balance of a [SwapInfo].
     pub fn minimum_rent_exempt_balance() -> Result<u64> {
@@ -27,7 +27,7 @@ impl Owner for SwapInfo {
 }
 
 impl Deref for SwapInfo {
-    type Target = stable_swap_client::state::SwapInfo;
+    type Target = meteora_stable_swap_client::state::SwapInfo;
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -47,6 +47,6 @@ impl anchor_lang::AccountDeserialize for SwapInfo {
     }
 
     fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
-        Ok(stable_swap_client::state::SwapInfo::unpack(buf).map(SwapInfo)?)
+        Ok(meteora_stable_swap_client::state::SwapInfo::unpack(buf).map(SwapInfo)?)
     }
 }

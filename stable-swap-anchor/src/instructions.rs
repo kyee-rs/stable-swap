@@ -3,11 +3,11 @@
 use crate::*;
 use anchor_lang::{prelude::*, solana_program};
 
-/// Creates and invokes a [stable_swap_client::instruction::initialize] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::initialize] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::InitializeData].
+/// See [meteora_stable_swap_client::instruction::InitializeData].
 ///
 /// * `nonce` - The nonce used to generate the swap_authority.
 /// * `amp_factor` - Amplification factor.
@@ -16,9 +16,9 @@ pub fn initialize<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, Initialize<'info>>,
     nonce: u8,
     amp_factor: u64,
-    fees: stable_swap_client::fees::Fees,
+    fees: meteora_stable_swap_client::fees::Fees,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::initialize(
+    let ix = meteora_stable_swap_client::instruction::initialize(
         // token program ID is verified by the stable swap program
         ctx.accounts.token_program.key,
         ctx.accounts.swap.key,
@@ -58,11 +58,11 @@ pub fn initialize<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::deposit] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::deposit] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::DepositData].
+/// See [meteora_stable_swap_client::instruction::DepositData].
 ///
 /// * `token_a_amount` - Amount of tokens of [`Deposit::input_a`] to deposit.
 /// * `token_b_amount` - Amount of tokens of [`Deposit::input_b`] to deposit.
@@ -73,7 +73,7 @@ pub fn deposit<'a, 'b, 'c, 'info>(
     token_b_amount: u64,
     min_mint_amount: u64,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::deposit(
+    let ix = meteora_stable_swap_client::instruction::deposit(
         // token program ID is verified by the stable swap program
         ctx.accounts.user.token_program.key,
         ctx.accounts.user.swap.key,
@@ -110,11 +110,11 @@ pub fn deposit<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::swap] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::swap] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::SwapData].
+/// See [meteora_stable_swap_client::instruction::SwapData].
 ///
 /// * `amount_in` - Amount of [`Swap::input`] tokens to swap.
 /// * `minimum_amount_out` - Minimum amount of [`Swap::output`] tokens to receive.
@@ -123,7 +123,7 @@ pub fn swap<'a, 'b, 'c, 'info>(
     amount_in: u64,
     minimum_amount_out: u64,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::swap(
+    let ix = meteora_stable_swap_client::instruction::swap(
         ctx.accounts.user.token_program.key,
         ctx.accounts.user.swap.key,
         ctx.accounts.user.swap_authority.key,
@@ -156,11 +156,11 @@ pub fn swap<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::withdraw_one] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::withdraw_one] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::WithdrawOneData].
+/// See [meteora_stable_swap_client::instruction::WithdrawOneData].
 ///
 /// * `pool_token_amount` - Amount of LP tokens to withdraw.
 /// * `minimum_token_amount` - Minimum amount of tokens of [`WithdrawOne::output`] to withdraw.
@@ -169,7 +169,7 @@ pub fn withdraw_one<'a, 'b, 'c, 'info>(
     pool_token_amount: u64,
     minimum_token_amount: u64,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::withdraw_one(
+    let ix = meteora_stable_swap_client::instruction::withdraw_one(
         ctx.accounts.user.token_program.key,
         ctx.accounts.user.swap.key,
         ctx.accounts.user.swap_authority.key,
@@ -204,11 +204,11 @@ pub fn withdraw_one<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::withdraw] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::withdraw] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::WithdrawData].
+/// See [meteora_stable_swap_client::instruction::WithdrawData].
 ///
 /// * `pool_token_amount` - Amount of LP tokens to withdraw.
 /// * `minimum_token_a_amount` - Minimum amount of tokens of [`Withdraw::output_a`] to withdraw.
@@ -219,7 +219,7 @@ pub fn withdraw<'a, 'b, 'c, 'info>(
     minimum_token_a_amount: u64,
     minimum_token_b_amount: u64,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::withdraw(
+    let ix = meteora_stable_swap_client::instruction::withdraw(
         // token program ID is verified by the stable swap program
         ctx.accounts.user.token_program.key,
         ctx.accounts.user.swap.key,
@@ -242,11 +242,11 @@ pub fn withdraw<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::ramp_a] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::ramp_a] instruction.
 ///
 /// # Arguments
 ///
-/// See [stable_swap_client::instruction::RampAData].
+/// See [meteora_stable_swap_client::instruction::RampAData].
 ///
 /// * `target_amp` - Target amplification factor to ramp to.
 /// * `stop_ramp_ts` - Timestamp when ramp up/down should stop.
@@ -255,7 +255,7 @@ pub fn ramp_a<'a, 'b, 'c, 'info>(
     target_amp: u64,
     stop_ramp_ts: i64,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::ramp_a(
+    let ix = meteora_stable_swap_client::instruction::ramp_a(
         ctx.accounts.swap.key,
         ctx.accounts.admin.key,
         target_amp,
@@ -265,11 +265,11 @@ pub fn ramp_a<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::stop_ramp_a] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::stop_ramp_a] instruction.
 pub fn stop_ramp_a<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::stop_ramp_a(
+    let ix = meteora_stable_swap_client::instruction::stop_ramp_a(
         ctx.accounts.swap.key,
         ctx.accounts.admin.key,
     )?;
@@ -277,30 +277,11 @@ pub fn stop_ramp_a<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::pause] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::pause] instruction.
 pub fn pause<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::pause(ctx.accounts.swap.key, ctx.accounts.admin.key)?;
-    solana_program::program::invoke_signed(&ix, &ctx.to_account_infos(), ctx.signer_seeds)?;
-    Ok(())
-}
-
-/// Creates and invokes a [stable_swap_client::instruction::unpause] instruction.
-pub fn unpause<'a, 'b, 'c, 'info>(
-    ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
-) -> Result<()> {
-    let ix =
-        stable_swap_client::instruction::unpause(ctx.accounts.swap.key, ctx.accounts.admin.key)?;
-    solana_program::program::invoke_signed(&ix, &ctx.to_account_infos(), ctx.signer_seeds)?;
-    Ok(())
-}
-
-/// Creates and invokes a [stable_swap_client::instruction::apply_new_admin] instruction.
-pub fn apply_new_admin<'a, 'b, 'c, 'info>(
-    ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
-) -> Result<()> {
-    let ix = stable_swap_client::instruction::apply_new_admin(
+    let ix = meteora_stable_swap_client::instruction::pause(
         ctx.accounts.swap.key,
         ctx.accounts.admin.key,
     )?;
@@ -308,7 +289,31 @@ pub fn apply_new_admin<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::commit_new_admin] instruction
+/// Creates and invokes a [meteora_stable_swap_client::instruction::unpause] instruction.
+pub fn unpause<'a, 'b, 'c, 'info>(
+    ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
+) -> Result<()> {
+    let ix = meteora_stable_swap_client::instruction::unpause(
+        ctx.accounts.swap.key,
+        ctx.accounts.admin.key,
+    )?;
+    solana_program::program::invoke_signed(&ix, &ctx.to_account_infos(), ctx.signer_seeds)?;
+    Ok(())
+}
+
+/// Creates and invokes a [meteora_stable_swap_client::instruction::apply_new_admin] instruction.
+pub fn apply_new_admin<'a, 'b, 'c, 'info>(
+    ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
+) -> Result<()> {
+    let ix = meteora_stable_swap_client::instruction::apply_new_admin(
+        ctx.accounts.swap.key,
+        ctx.accounts.admin.key,
+    )?;
+    solana_program::program::invoke_signed(&ix, &ctx.to_account_infos(), ctx.signer_seeds)?;
+    Ok(())
+}
+
+/// Creates and invokes a [meteora_stable_swap_client::instruction::commit_new_admin] instruction
 ///
 /// # Arguments
 ///
@@ -317,7 +322,7 @@ pub fn commit_new_admin<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, CommitNewAdmin<'info>>,
 ) -> Result<()> {
     let admin_ctx = &ctx.accounts.admin_ctx;
-    let ix = stable_swap_client::instruction::commit_new_admin(
+    let ix = meteora_stable_swap_client::instruction::commit_new_admin(
         admin_ctx.swap.key,
         admin_ctx.admin.key,
         ctx.accounts.new_admin.key,
@@ -326,11 +331,11 @@ pub fn commit_new_admin<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::set_fee_account] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::set_fee_account] instruction.
 pub fn set_fee_account<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, SetFeeAccount<'info>>,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::set_fee_account(
+    let ix = meteora_stable_swap_client::instruction::set_fee_account(
         ctx.accounts.admin_ctx.swap.key,
         ctx.accounts.admin_ctx.admin.key,
         ctx.accounts.fee_account.to_account_info().key,
@@ -339,16 +344,16 @@ pub fn set_fee_account<'a, 'b, 'c, 'info>(
     Ok(())
 }
 
-/// Creates and invokes a [stable_swap_client::instruction::set_new_fees] instruction.
+/// Creates and invokes a [meteora_stable_swap_client::instruction::set_new_fees] instruction.
 ///
 /// # Arguments
 ///
-/// * `fees` - new [`stable_swap_client::fees::Fees`].
+/// * `fees` - new [`meteora_stable_swap_client::fees::Fees`].
 pub fn set_new_fees<'a, 'b, 'c, 'info>(
     ctx: CpiContext<'a, 'b, 'c, 'info, AdminUserContext<'info>>,
-    fees: stable_swap_client::fees::Fees,
+    fees: meteora_stable_swap_client::fees::Fees,
 ) -> Result<()> {
-    let ix = stable_swap_client::instruction::set_new_fees(
+    let ix = meteora_stable_swap_client::instruction::set_new_fees(
         ctx.accounts.swap.key,
         ctx.accounts.admin.key,
         fees,

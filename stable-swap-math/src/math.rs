@@ -1,7 +1,7 @@
 //! Math helpers
 
+use meteora_stable_swap_client::fees::Fees;
 use num_traits::ToPrimitive;
-use stable_swap_client::fees::Fees;
 
 const MAX: u64 = 1 << 32;
 const MAX_BIG: u64 = 1 << 48;

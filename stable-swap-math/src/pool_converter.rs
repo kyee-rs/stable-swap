@@ -1,7 +1,7 @@
 //! Conversions for pool tokens
 use crate::math::FeeCalculator;
+use meteora_stable_swap_client::fees::Fees;
 use num_traits::ToPrimitive;
-use stable_swap_client::fees::Fees;
 
 /// Converter to determine how much to deposit / withdraw, along with
 /// proper initialization

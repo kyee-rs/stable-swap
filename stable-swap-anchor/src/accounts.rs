@@ -69,7 +69,7 @@ pub struct WithdrawOne<'info> {
     /// to determine how many tokens are paid out to users withdrawing from
     /// the swap.
     ///
-    /// *For more info, see [stable_swap_client::state::SwapTokenInfo::reserves].*
+    /// *For more info, see [meteora_stable_swap_client::state::SwapTokenInfo::reserves].*
     pub quote_reserves: AccountInfo<'info>,
     /// Accounts for output tokens.
     pub output: SwapOutput<'info>,

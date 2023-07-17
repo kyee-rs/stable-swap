@@ -5,7 +5,7 @@
 #![allow(clippy::integer_arithmetic)]
 
 use borsh::{BorshDeserialize, BorshSerialize};
-use stable_swap_client::error::SwapError;
+use meteora_stable_swap_client::error::SwapError;
 use std::borrow::BorrowMut;
 use std::io::{Error, ErrorKind, Write};
 use std::mem::size_of;

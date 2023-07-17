@@ -1,11 +1,11 @@
 [package]
-name = "stable-swap-client"
+name = "meteora-stable-swap-client"
 version = "1.8.1"
 description = "StableSwap Rust client."
 license = "Apache-2.0"
 authors = ["michaelhly <michaelhly@gmail.com>"]
-homepage = "https://saber.so"
-repository = "https://github.com/saber-hq/stable-swap"
+homepage = "https://app.meteora.ag/"
+repository = "https://github.com/MeteoraAg/stable-swap"
 edition = "2021"
 keywords = ["solana", "saber"]
 

@@ -1,12 +1,12 @@
 //! Swap calculations and curve invariant implementation
 
 use crate::{bn::U192, math::FeeCalculator};
-use num_traits::ToPrimitive;
-use stable_swap_client::{
+use meteora_stable_swap_client::{
     fees::Fees,
     solana_program::{clock::Clock, program_error::ProgramError, sysvar::Sysvar},
     state::SwapInfo,
 };
+use num_traits::ToPrimitive;
 
 /// Number of coins in a swap.
 /// The Saber StableSwap only supports 2 tokens.
@@ -247,7 +247,7 @@ impl StableSwap {
     /// - `amount_a` - The amount of token A owned by the LP pool. (i.e. token A reserves)
     /// - `amount_b` - The amount of token B owned by the LP pool. (i.e. token B reserves)
     ///
-    /// *For more info on reserves, see [stable_swap_client::state::SwapTokenInfo::reserves].*
+    /// *For more info on reserves, see [meteora_stable_swap_client::state::SwapTokenInfo::reserves].*
     pub fn compute_d(&self, amount_a: u64, amount_b: u64) -> Option<U192> {
         self.compute_d2(amount_a as u128, amount_b as u128)
     }

@@ -6,6 +6,7 @@ use crate::{
     processor::utils,
     state::SwapInfo,
 };
+use meteora_stable_swap_client::fees::Fees;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -14,7 +15,6 @@ use solana_program::{
     pubkey::Pubkey,
     sysvar::{clock::Clock, Sysvar},
 };
-use stable_swap_client::fees::Fees;
 use stable_swap_math::curve::{StableSwap, MAX_AMP, MIN_AMP, MIN_RAMP_DURATION, ZERO_TS};
 
 use super::checks::check_has_admin_signer;
