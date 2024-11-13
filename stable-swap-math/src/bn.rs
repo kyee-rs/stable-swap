@@ -4,6 +4,7 @@
 #![allow(clippy::manual_range_contains)]
 #![allow(clippy::integer_arithmetic)]
 
+use borsh::maybestd::io::Read;
 use borsh::{BorshDeserialize, BorshSerialize};
 use stable_swap_client::error::SwapError;
 use std::borrow::BorrowMut;
@@ -37,6 +38,11 @@ macro_rules! impl_borsh_deserialize_for_bn {
                 let res = $type::from_le_bytes(buf[..size_of::<$type>()].try_into().unwrap());
                 *buf = &buf[size_of::<$type>()..];
                 Ok(res)
+            }
+            fn deserialize_reader<R: Read>(reader: &mut R) -> std::io::Result<Self> {
+                let mut buf = [0u8; size_of::<$type>()];
+                reader.read_exact(&mut buf)?;
+                Ok($type::from_le_bytes(buf))
             }
         }
     };
