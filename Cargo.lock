@@ -1813,7 +1813,7 @@ dependencies = [
 name = "stable-swap-math"
 version = "1.8.2"
 dependencies = [
- "borsh 0.10.4",
+ "borsh 1.5.2",
  "num-traits",
  "proptest",
  "rand 0.8.5",

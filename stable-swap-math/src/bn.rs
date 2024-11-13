@@ -4,11 +4,10 @@
 #![allow(clippy::manual_range_contains)]
 #![allow(clippy::integer_arithmetic)]
 
-use borsh::maybestd::io::Read;
 use borsh::{BorshDeserialize, BorshSerialize};
 use stable_swap_client::error::SwapError;
 use std::borrow::BorrowMut;
-use std::io::{Error, ErrorKind, Write};
+use std::io::{Error, ErrorKind, Read, Write};
 use std::mem::size_of;
 use uint::construct_uint;
 
